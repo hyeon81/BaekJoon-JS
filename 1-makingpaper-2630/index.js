@@ -17,8 +17,23 @@ let N = 0;
 let white = 0;
 let blue = 0;
 
+const checkFullColor = (start, n, yPos, input) => {
+    let color = input[yPos][start];
+
+    for (let i = yPos; i < (yPos + n); i++)
+        {
+            for (let j = start; j < (start + n); j++)
+            {
+                if (color != input[i][j])
+                {
+                    return -1;
+                }
+            }
+        }
+    return color
+}
+
 const recur = (start, n, yPos, input) => {
-    console.log('n', n)
     if (n < 2)
     {
         if (input[yPos][start] == 1)
@@ -29,56 +44,33 @@ const recur = (start, n, yPos, input) => {
     }
     else
     {
-        let color = input[yPos][start];
-        console.log('color', color)
-        let flag = 0;
-        outerLoop: for (let i = yPos; i < (yPos + n); i++)
-        {
-            for (let j = start; j < (start + n); j++)
-            {
-                console.log(i, j)
-                if (color != input[i][j])
-                {
-                    flag = 1;
-                    break outerLoop;
-                }
-            }
-        }
-        console.log('flag', flag)
-        if (flag == 1)
+        const res = checkFullColor(start, n, yPos, input)
+        if (res == -1)
         {
             //1사분면 사각형
-            recur(n/2, n/2, n/2, input);
+            recur(0 + start, n/2, 0 + yPos, input);
             //2사분면 사각형
-            recur(n/2 + n/4, n/2, n/2, input)
+            recur(n/2 + start, n/2, 0 + yPos, input)
             //3사분면 사각형
-            recur(0, n/2, n/2, input)
+            recur(0 + start, n/2, n/2 + yPos, input)
             //4사분면 사각형
-            recur(n/2, n/2, n/2, input)
+            recur(n/2 + start, n/2, n/2 + yPos, input)
         }
         else
         {
-            if (color == 1)
+            if (res == 1)
                 blue++;
             else
                 white++;
         }
-        console.log('==============')
         return
     }
 }
 
 
 const solution = (input) =>{
-    console.log('N', N)
     //1사분면 사각형
-    recur(0, N/2, 0, input);
-    //2사분면 사각형
-    recur(N/2, N/2, 0, input)
-    //3사분면 사각형
-    recur(0, N/2, N/2, input)
-    //4사분면 사각형
-    recur(N/2, N/2, N/2, input)
+    recur(0, N, 0, input);
     console.log(white)
     console.log(blue)
 }

@@ -1,22 +1,54 @@
 /* readline Module */
 
 let N = 0;
+let arr;
 
-const recur = (startX, startY, n) => {
+const printStar = (x, y, n) => {
+    arr[x][y] = "*";
+    arr[x][y + 1] = "*";
+    arr[x][y + 2] = "*";
+    arr[x + 1][y] = "*";
+    arr[x + 1][y + 2] = "*";
+    arr[x + 2][y] = "*";
+    arr[x + 2][y + 1] = "*";
+    arr[x + 2][y + 2] = "*";
+}
+
+
+const recur = (x, y, n) => {
     //가운데 일때는 그리지 않는다
-    //처음 n은 27이라면
+    if (n == 3)
+        return printStar(x,y,n);
 
-    let count = n / 3; //찍어야하는 별 개수
-    let idx = 0;
-    
+    //1구역
+    recur(0 + x, 0 + y, n/3)
+    //2구역
+    recur(0 + x, n/3 + y, n/3)
+    //3구역
+    recur(0 + x, n/3*2 + y, n/3)
+    //4구역
+    recur(n/3 + x, 0 + y, n/3)
+    //5구역
+    // recur(n/3 + x, n/3 + y, n/3)
+    //6구역
+    recur(n/3 + x, n/3*2 + y, n/3)
+    //7구역
+    recur(n/3*2 + x, 0 + y, n/3)
+    //8구역
+    recur(n/3*2 + x, n/3 + y, n/3)
+    //9구역
+    recur(n/3*2 + x, n/3*2 + y, n/3)
 }
 
 
 const solution = () =>{
-    let arr = new Array(N).fill(new Array(N)).fill(0);
-    
-    
-
+    arr = Array.from({ length: N }, () => Array.from({ length: N }, () => ' '));
+    recur(0, 0, N);
+    for (let i = 0; i < N; i++)
+    {
+        let str = arr[i].join('')
+        console.log(str)
+    }
 }
 
 
@@ -46,7 +78,7 @@ rl.on("line", function (line) {
             N = parseInt(val);
             return;
         }
-        list.push(val.split(' ').map((el) => parseInt(el)));
+        // list.push(val.split(' ').map((el) => parseInt(el)));
     });
 
     solution(list); // 문제 풀이 함수 호출    

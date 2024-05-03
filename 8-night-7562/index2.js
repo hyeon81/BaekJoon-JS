@@ -19,16 +19,13 @@ const dir = [[1, 2], [2, 1], [2, -1], [1, -2], [-1, -2], [-2, -1], [-2, 1], [-1,
 //     return (pos);
 // }
 
-const bfs = (size, current, target) => {
+const dfs = (size, current, target) => {
     console.log('currnet', current, 'target', target)
-    let visit = Array.from({ length: size }, () => Array(size).fill(false));
+    let visit = Array.from({ length: size }, () => Array.from({length: size}).fill(false));
     let queue = [];
     const [cx, cy] = current;
     const [tx, ty] = target;
-    // if (cx == tx && cy == ty)
-    // {
-    //     return;
-    // }
+
     queue.push([...current, 0]);
     visit[cx][cy] = true;
     while (queue.length > 0)
@@ -36,7 +33,8 @@ const bfs = (size, current, target) => {
         const [x, y, depth] = queue.shift()
         if (x == tx && y == ty)
         {
-            return depth;
+            console.log(depth)
+            return;
         }
         for (let i = 0; i < 8; i++)
         {
@@ -52,33 +50,36 @@ const bfs = (size, current, target) => {
     }
 }
 
-// const solution = (input) => {
-//     for (let i = 0; i < C * 3; i = i + 3)
-//     {
-//         dfs(input[i][0], input[i+1], input[i+2]);
-//     }
-// }
+const solution = (input) => {
+    for (let i = 0; i < C * 3; i = i + 3)
+    {
+        dfs(input[i][0], input[i+1], input[i+2]);
+    }
+}
 
+/* readline Module */
 const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
+    input: process.stdin,
+    output: process.stdout,
 });
 
+
 let input = [];
+let list = [];
 
-rl.on("line", (line) => {
-  input.push(line);
-}).on("close", () => {
-    console.log('input', input)
-  const C = parseInt(input[0]);
-  let idx = 1;
+rl.on("line", function (line) {
+   input.push(line) 
+}).on("close", function () {
 
-  for (let i = 0; i < C; i++) {
-    const size = parseInt(input[idx++]);
-    const start = input[idx++].split(" ").map(Number);
-    const end = input[idx++].split(" ").map(Number);
-    console.log(bfs(size, start, end));
-  }
+    input.forEach((val, idx) => {
+        if (idx == 0) {
+            C = parseInt(val[0]);
+            return;
+        }
+        list.push(val.split(' ').map(v => parseInt(v)));
+    });
 
-  process.exit();
+    console.log('list', list)
+    solution(list); 
+    process.exit();
 });

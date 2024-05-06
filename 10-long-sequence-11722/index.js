@@ -19,16 +19,20 @@ rl.on("line", (line) => {
 
 const main = (line) => {
     let dp = [];
-    for (let i = 0; i < line.length(); i++)
+    line = line.reverse();
+    for (let i = 0; i < line.length; i++)
     {
         dp[i] = 1;
-
-        for (let i = 2; i <= n; i++)
+        for (let j = 0; j < i; j++)
         {
-            d[i] = 1;
-            for (let j = 0; j < i; j++)
+            // 이전 값이 현재 값보다 작고, 현재 dp값이 이전 dp값보다 크다면
+            if (line[i] > line[j] && dp[i] < dp[j] + 1)
             {
+                dp[i] = dp[j] + 1;
             }
         }
     }
+    console.log(Math.max(...dp));
 };
+
+
